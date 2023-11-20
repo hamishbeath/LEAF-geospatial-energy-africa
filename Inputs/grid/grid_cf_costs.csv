@@ -1,0 +1,10 @@
+﻿Mode,Cost,CF
+Coal,2500,0.85
+Geothermal,4000,0.79
+Oil,1300,0.8
+Gas,1200,0.85
+PV,1378,Varies
+Biofuels,2500,0.5
+Nuclear,6137,0.85
+Hydro,2500,Varies
+Wind,1489,Varies

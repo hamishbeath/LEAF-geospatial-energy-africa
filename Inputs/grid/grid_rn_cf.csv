@@ -1,0 +1,44 @@
+﻿ISO3,Country,Hydro,PV,Wind
+AGO,Angola,0.52,0.32,0.11
+BEN,Benin,0.36,0.27,0.13
+BWA,Botswana,0.23,0.35,0.21
+BFA,Burkina Faso,0.35,0.37,0.17
+BDI,Burundi,0.42,0.28,0.06
+CMR,Cameroon,0.6,0.31,0.07
+CAF,Central African Republic,0.7,0.28,0.08
+TCD,Chad,0.43,0.33,0.26
+CIV,Cote d'Ivoire,0.33,0.17,0.09
+DJI,Djibouti,0.41,0.29,0.21
+COD,DRC,0.34,0.26,0.06
+GNQ,Equatorial Guinea,0.19,0.23,0.03
+ERI,Eritrea,0.41,0.3,0.16
+ETH,Ethiopia,0.41,0.37,0.18
+GAB,Gabon,0.55,0.25,0.04
+GMB,Gambia,0.41,0.28,0.14
+GHA,Ghana,0.58,0.27,0.1
+GIN,Guinea,0.43,0.35,0.08
+GNB,Guinea Bissau,0.41,0.26,0.11
+KEN,Kenya,0.48,0.32,0.21
+LSO,Lesotho,0.69,0.36,0.15
+LBR,Liberia,0.6,0.27,0.07
+MDG,Madagascar,0.68,0.3,0.18
+MWI,Malawi,0.54,0.44,0.16
+MLI,Mali,0.54,0.37,0.22
+MRT,Mauritania,0.41,0.37,0.35
+MOZ,Mozambique,0.68,0.3,0.18
+NAM,Namibia,0.59,0.41,0.15
+NER,Niger,0.36,0.37,0.27
+NGA,Nigeria,0.36,0.34,0.15
+COG,Republic of Congo,0.47,0.25,0.03
+RWA,Rwanda,0.38,0.33,0.06
+SEN,Senegal,0.41,0.41,0.17
+SLE,Sierra Leone,0.36,0.26,0.08
+SOM,Somalia,0.41,0.29,0.52
+ZAF,South Africa,0.23,0.38,0.25
+SSD,South Sudan,0.5,0.19,0.15
+SDN,Sudan,0.43,0.26,0.22
+TZA,Tanzania,0.47,0.38,0.14
+TGO,Togo,0.23,0.26,0.12
+UGA,Uganda,0.54,0.31,0.08
+ZMB,Zambia,0.63,0.32,0.21
+ZWE,Zimbabwe,0.68,0.34,0.2
