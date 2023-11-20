@@ -98,37 +98,79 @@ def main() -> None:
     # Utils().household_installation_cost(LEAF.target_year)
 
 def reliability_penalty_sensitivity_analysis():
+    """
+    Perform sensitivity analysis on the reliability penalty.
 
+    This function iterates over a range of reliability penalties and calculates the least cost option
+    for each penalty. It saves the results to CSV files.
+
+    Parameters:
+    None
+
+    Returns:
+    None
+    """
+
+    # Iterate over different tiers
     for i in range(2, 5):
         tier_results_output = pd.DataFrame()
         reliability_penalties = np.arange(0.0, 1.05, 0.05)
+        
+        # Iterate over different reliability penalties
         for penalty in reliability_penalties:
-
             unmet_demand_penalty = penalty
+            
+            # Calculate least cost option for the given parameters
             tier_penalty_output, tier_penalty_by_cell = \
                 return_least_cost_option(LEAF.target_year, LEAF.scenario, i, LEAF.reliability, unmet_demand_penalty,
                                          LEAF.global_carbon_taxes)
+            
+            # Set the index of the output DataFrame to the penalty value
             tier_penalty_output.index = [penalty]
+            
+            # Concatenate the output DataFrame with the overall results DataFrame
             tier_results_output = pd.concat([tier_results_output, tier_penalty_output], axis=0)
+            
+            # Save the results by cell to a CSV file
             tier_penalty_by_cell.to_csv(LEAF.sensitivity_outputs + 'Reliability_penalty_sensitivity_analysis_'
                                         + str(penalty) +'_by_cell_tier_' + str(i) + '.csv')
+        
+        # Save the overall results to a CSV file
         tier_results_output.to_csv(LEAF.sensitivity_outputs
                                    + 'Reliability_penalty_sensitivity_analysis_tier' + str(i) + '.csv')
 
+# Function to perform sensitivity analysis on reliability subsidies
 def reliability_subsidy_sensitivity_analysis():
-
+    """
+    Perform sensitivity analysis on reliability subsidies for different tiers.
+    
+    This function iterates over different tiers and different reliability subsidies to calculate the least cost option
+    for the given parameters. It saves the results to CSV files.
+    """
+    # Iterate over different tiers
     for i in range(2, 5):
         tier_results_output = pd.DataFrame()
         reliability_subsidies = np.arange(0.0, 1.05, 0.05)
+        
+        # Iterate over different reliability subsidies
         for subsidy in reliability_subsidies:
-
+            
+            # Calculate least cost option for the given parameters
             tier_subsidy_output, tier_subsidy_by_cell = \
                 return_least_cost_option(LEAF.target_year, LEAF.scenario, i, LEAF.reliability, 0,
                                          LEAF.global_carbon_taxes, subsidy)
+            
+            # Set the index of the output DataFrame to the subsidy value
             tier_subsidy_output.index = [subsidy]
+            
+            # Concatenate the output DataFrame with the overall results DataFrame
             tier_results_output = pd.concat([tier_results_output, tier_subsidy_output], axis=0)
+            
+            # Save the results by cell to a CSV file
             tier_subsidy_by_cell.to_csv(LEAF.sensitivity_outputs + 'Reliability_subsidy_sensitivity_analysis_'
                                         + str(subsidy) +'_by_cell_tier_' + str(i) + '.csv')
+        
+        # Save the overall results to a CSV file
         tier_results_output.to_csv(LEAF.sensitivity_outputs
                                    + 'Reliability_subsidy_sensitivity_analysis_tier' + str(i) + '.csv')
 
