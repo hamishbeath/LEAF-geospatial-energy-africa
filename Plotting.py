@@ -3,17 +3,15 @@ from matplotlib import cm
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 import pandas as pd
 import geopandas as gp
-import pylab as pl
 from matplotlib import rcParams
-import plotly.express as px
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.patches as mpatches
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 import seaborn as sns
-import plotly.express as px
-import squarify
+
+
 # from main_planar import *
 from Utils import *
 rcParams['font.family'] = 'sans-serif'
