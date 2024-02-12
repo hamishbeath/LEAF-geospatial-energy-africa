@@ -5,7 +5,7 @@ from Utils import *
 
 class LEAF:
 
-    model_filepath = '~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF/'
+    model_filepath = '~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF-geospatial-energy-africa/' 
     model_inputs, model_outputs = model_filepath + 'Inputs/', model_filepath + 'Outputs/'
     sensitivity_outputs = model_outputs + 'Sensitivity/'
     sensitivity_inputs = model_inputs + 'Sensitivity/'

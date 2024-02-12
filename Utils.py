@@ -3,7 +3,7 @@ import numpy as np
 
 
 # from main import *
-# from main import SEAR, SpatialData
+# from main import LEAF, SpatialData
 
 
 class Utils:
@@ -59,7 +59,7 @@ class Utils:
         """
         # Set output dataframe
         output_df = pd.DataFrame([])
-        countries = SEAR.country_data_sheet['ISO3']
+        countries = LEAF.country_data_sheet['ISO3']
 
         output_df['IS03'] = countries
 
@@ -92,8 +92,8 @@ class Utils:
         Inputs: Input_value, year in cost calculation
         Outputs: Discounted value
         """
-        reduction_factor = year - SEAR.current_calendar_year
-        output_value = input_value * (1.0 - SEAR.discount_rate) ** reduction_factor
+        reduction_factor = year - LEAF.current_calendar_year
+        output_value = input_value * (1.0 - LEAF.discount_rate) ** reduction_factor
         return output_value
 
     # Util function that adds carbon tax
@@ -158,17 +158,17 @@ class Utils:
         countries_summaries_df = pd.DataFrame([])
 
         # Loop through countries
-        for country in range(0, len(SEAR.country_data_sheet)):
+        for country in range(0, len(LEAF.country_data_sheet)):
 
-            country_select = SEAR.country_data_sheet['ISO3'][country]
+            country_select = LEAF.country_data_sheet['ISO3'][country]
             cells_select = input_df.loc[input_df['ISO3'] == country_select]
             country_summary = Utils().get_summary_statistics(cells_select)
             country_summary_df = pd.DataFrame.from_dict(country_summary, orient='columns')
             countries_summaries_df = pd.concat([countries_summaries_df, country_summary_df], axis=0)
 
         countries_summaries_df = countries_summaries_df.reset_index(drop=True)
-        countries_summaries_df['ISO3'] = SEAR.country_data_sheet['ISO3']
-        countries_summaries_df['Country'] = SEAR.country_data_sheet['location']
+        countries_summaries_df['ISO3'] = LEAF.country_data_sheet['ISO3']
+        countries_summaries_df['Country'] = LEAF.country_data_sheet['location']
 
         return countries_summaries_df
 
@@ -212,13 +212,13 @@ class Utils:
 
         # Import electricity demand
         electricity_demand_by_cell = \
-            pd.read_csv(SpatialData.spatial_filepath + 'energy_demand_by_year_' + SEAR.scenario + '_' +
-                        str(SEAR.target_year) + '_tier_' + str(tier) + '.csv')
+            pd.read_csv(SpatialData.spatial_filepath + 'energy_demand_by_year_' + LEAF.scenario + '_' +
+                        str(LEAF.target_year) + '_tier_' + str(tier) + '.csv')
 
         # Create high-reliability cost addition
         high_rel = pd.DataFrame(electricity_demand_by_cell['id'])
         high_rel['sum'] = np.zeros(len(high_rel))
-        for year in range(2021, SEAR.target_year + 1):
+        for year in range(2021, LEAF.target_year + 1):
             year_column = pd.DataFrame(electricity_demand_by_cell[str(year)])
             year_column = year_column * 0.1 * reliability_penalty
             year_column_discounted = Utils.return_discounted_value(self, year_column, year)
@@ -226,13 +226,13 @@ class Utils:
 
         # Calculate grid-reliability cost additions
         grid_rel = pd.DataFrame([])
-        for i in range(0, len(SEAR.country_data_sheet)):
-            country = SEAR.country_data_sheet['ISO3'][i]
-            penalty_factor = SEAR.country_data_sheet['Blackout Threshold'][i]
+        for i in range(0, len(LEAF.country_data_sheet)):
+            country = LEAF.country_data_sheet['ISO3'][i]
+            penalty_factor = LEAF.country_data_sheet['Blackout Threshold'][i]
             country_cells = pd.DataFrame(electricity_demand_by_cell.loc[electricity_demand_by_cell['ISO3'] == country])
             output_df = pd.DataFrame(country_cells['id'])
             output_df['sum'] = np.zeros(len(country_cells))
-            for year in range(2021, SEAR.target_year + 1):
+            for year in range(2021, LEAF.target_year + 1):
                 year_country_penalty = country_cells[str(year)] * penalty_factor * reliability_penalty
                 year_country_penalty = Utils.return_discounted_value(self, year_country_penalty, year)
                 output_df['sum'] += year_country_penalty
@@ -246,19 +246,19 @@ class Utils:
 
         # Import electricity demand
         electricity_demand_by_cell = \
-            pd.read_csv(SpatialData.spatial_filepath + 'energy_demand_by_year_' + SEAR.scenario + '_' +
-                        str(SEAR.target_year) + '_tier_' + str(tier) + '.csv')
+            pd.read_csv(SpatialData.spatial_filepath + 'energy_demand_by_year_' + LEAF.scenario + '_' +
+                        str(LEAF.target_year) + '_tier_' + str(tier) + '.csv')
 
         # Calculate off-grid subsidy based on additional demand met above grid
         grid_rel = pd.DataFrame([])
-        for i in range(0, len(SEAR.country_data_sheet)):
-            country = SEAR.country_data_sheet['ISO3'][i]
-            subsidy_factor = (SEAR.country_data_sheet['Blackout Threshold'][i]) - 0.1
+        for i in range(0, len(LEAF.country_data_sheet)):
+            country = LEAF.country_data_sheet['ISO3'][i]
+            subsidy_factor = (LEAF.country_data_sheet['Blackout Threshold'][i]) - 0.1
             print(country, subsidy_factor)
             country_cells = pd.DataFrame(electricity_demand_by_cell.loc[electricity_demand_by_cell['ISO3'] == country])
             output_df = pd.DataFrame(country_cells['id'])
             output_df['sum'] = np.zeros(len(country_cells))
-            for year in range(2021, SEAR.target_year + 1):
+            for year in range(2021, LEAF.target_year + 1):
                 year_country_subsidy = country_cells[str(year)] * subsidy_factor * (- reliability_subsidy)
                 year_country_subsidy = Utils.return_discounted_value(self, year_country_subsidy, year)
                 output_df['sum'] += year_country_subsidy
@@ -276,24 +276,24 @@ class Utils:
         # Set empty df to append average / peak
         peak_factors = pd.DataFrame()
         peak_factors['Countries'], peak_factors['ISO3'] = \
-            SEAR.country_data_sheet['location'], SEAR.country_data_sheet['ISO3']
+            LEAF.country_data_sheet['location'], LEAF.country_data_sheet['ISO3']
         # Set empty list to give the calculated tiers
-        totals_tiers = np.zeros(len(SEAR.country_data_sheet))
+        totals_tiers = np.zeros(len(LEAF.country_data_sheet))
         for tier in range(1, 5):
 
             # loop through countries and calculate demand difference in start and end year,
             # and mean vs peak demand factor
             country_growth_factors = []
             peak_load_factors = []
-            for i in range(0, len(SEAR.country_energy_subs)):
-                country = SEAR.country_energy_subs['location'][i]
-                energy_sub = SEAR.country_energy_subs['energy_file'][i]
+            for i in range(0, len(LEAF.country_energy_subs)):
+                country = LEAF.country_energy_subs['location'][i]
+                energy_sub = LEAF.country_energy_subs['energy_file'][i]
                 # Import electricity demand for country
                 start_year_file = \
-                    pd.read_csv(self.external_load_filepath + 'Load_by_year/SSP' + str(SEAR.ssp) + '/Tier ' +
+                    pd.read_csv(self.external_load_filepath + 'Load_by_year/SSP' + str(LEAF.ssp) + '/Tier ' +
                     str(tier) + '/' + energy_sub + '_community_load_2020.csv', index_col=0)['2020']
                 end_year_file = \
-                    pd.read_csv(self.external_load_filepath + 'Load_by_year/SSP' + str(SEAR.ssp) + '/Tier ' +
+                    pd.read_csv(self.external_load_filepath + 'Load_by_year/SSP' + str(LEAF.ssp) + '/Tier ' +
                     str(tier) + '/' + energy_sub + '_community_load_' + str(end_year) + '.csv',
                                        index_col=0)[str(end_year)]
                 start_year_sum = np.sum(start_year_file.values)
@@ -308,10 +308,10 @@ class Utils:
 
         totals_tiers = totals_tiers / 4
         # Categorise countries by demand growth
-        categories = pd.DataFrame(SEAR.country_data_sheet['ISO3'])
+        categories = pd.DataFrame(LEAF.country_data_sheet['ISO3'])
         categories['demand_growth_factor'] = totals_tiers
-        peak_factors.to_csv(SEAR.model_inputs + 'grid/grid_peak_factors.csv')
-        categories.to_csv(SEAR.model_inputs + 'demand_growth_factor.csv')
+        peak_factors.to_csv(LEAF.model_inputs + 'grid/grid_peak_factors.csv')
+        categories.to_csv(LEAF.model_inputs + 'demand_growth_factor.csv')
 
     # Util function that calculates grid coverage by country
     def calculate_grid_coverage_by_country(self):
@@ -323,10 +323,10 @@ class Utils:
         countries_grid_density = []
         countries_list = []
         # Loop through countries to calculate average distance to grid and total length of grid lines
-        for i in range(0, len(SEAR.country_data_sheet)):
+        for i in range(0, len(LEAF.country_data_sheet)):
 
-            country = SEAR.country_data_sheet['ISO3'][i]
-            area = SEAR.country_data_sheet['area'][i]
+            country = LEAF.country_data_sheet['ISO3'][i]
+            area = LEAF.country_data_sheet['area'][i]
 
             # Calculate household-weighted average distance to grid
             country_cells_distance = pd.DataFrame(existing_grid_distance.loc[existing_grid_distance['ISO3'] == country])
@@ -353,7 +353,7 @@ class Utils:
         output_df['ISO3'] = countries_list
         output_df['average_pop_weighted_dist'] = countries_pop_weighted_average_dist
         output_df['grid_density'] = countries_grid_density
-        output_df.to_csv(SEAR.model_inputs + 'grid_coverage_by_country.csv')
+        output_df.to_csv(LEAF.model_inputs + 'grid_coverage_by_country.csv')
 
     # Util function that provides mean reliability of a scenario, and emissions in 2030 year
     def scenario_analysis(self, tier, scenario, mode):
@@ -373,10 +373,10 @@ class Utils:
 
         if mode == 'all':
 
-            country_data = pd.read_csv(SEAR.model_inputs + 'country_inputs.csv')
-            for i in range(0, len(SEAR.country_data_sheet)):
-                country = SEAR.country_data_sheet['ISO3'][i]
-                reliability = SEAR.country_data_sheet['Rural_energy_met_dec'][i]
+            country_data = pd.read_csv(LEAF.model_inputs + 'country_inputs.csv')
+            for i in range(0, len(LEAF.country_data_sheet)):
+                country = LEAF.country_data_sheet['ISO3'][i]
+                reliability = LEAF.country_data_sheet['Rural_energy_met_dec'][i]
                 country_cells = scenario_df.loc[scenario_df['ISO3'] == country]
                 energy_cells = energy_df.loc[energy_df['ISO3'] == country]
                 summed = energy_cells.loc[:,'2021':'2030'].sum(axis=1)
@@ -399,10 +399,10 @@ class Utils:
 
         elif mode == 'grid':
 
-            country_data = pd.read_csv(SEAR.model_inputs + 'country_inputs.csv')
-            for i in range(0, len(SEAR.country_data_sheet)):
-                country = SEAR.country_data_sheet['ISO3'][i]
-                reliability = SEAR.country_data_sheet['Rural_energy_met_dec'][i]
+            country_data = pd.read_csv(LEAF.model_inputs + 'country_inputs.csv')
+            for i in range(0, len(LEAF.country_data_sheet)):
+                country = LEAF.country_data_sheet['ISO3'][i]
+                reliability = LEAF.country_data_sheet['Rural_energy_met_dec'][i]
                 # country_cells = scenario_df.loc[scenario_df['ISO3'] == country]
                 energy_cells = energy_df.loc[energy_df['ISO3'] == country]
                 country_energy_demand = np.sum(energy_cells.loc[:, '2021':'2030'].values)
@@ -416,17 +416,17 @@ class Utils:
     # Util function that calculates the cost and capacity factor of additional grid capacity for each country
     def grid_cost_and_cf(self):
         # Import required files
-        cost_cf_main = pd.read_csv(SEAR.model_inputs + 'grid/grid_cf_costs.csv', index_col=['Mode'])
-        grid_mode_shares = pd.read_csv(SEAR.model_inputs + 'grid/grid_electricity_shares.csv', index_col=['Mode'])
+        cost_cf_main = pd.read_csv(LEAF.model_inputs + 'grid/grid_cf_costs.csv', index_col=['Mode'])
+        grid_mode_shares = pd.read_csv(LEAF.model_inputs + 'grid/grid_electricity_shares.csv', index_col=['Mode'])
         renewables = ['PV', 'Hydro', 'Wind']
         country_CFs = {}
         country_costs = {}
 
         # loop through each country
-        for i in range(0, len(SEAR.country_data_sheet)):
+        for i in range(0, len(LEAF.country_data_sheet)):
 
-            country_name = SEAR.country_data_sheet['location'][i]
-            country_iso = SEAR.country_data_sheet['ISO3'][i]
+            country_name = LEAF.country_data_sheet['location'][i]
+            country_iso = LEAF.country_data_sheet['ISO3'][i]
             country_shares = grid_mode_shares[country_name]
 
             country_cost = 0
@@ -461,14 +461,14 @@ class Utils:
         output_df = pd.DataFrame.from_dict(country_CFs, orient='index')
         output_df.columns = ['CF']
         output_df['Cost'] = pd.DataFrame.from_dict(country_costs, orient='index')
-        output_df['ISO3'] = SEAR.country_data_sheet['ISO3']
-        output_df.to_csv(SEAR.model_inputs + 'grid/grid_cf_costs_by_country.csv')
+        output_df['ISO3'] = LEAF.country_data_sheet['ISO3']
+        output_df.to_csv(LEAF.model_inputs + 'grid/grid_cf_costs_by_country.csv')
 
     # Sub-function that returns the relevant renewables mode capacity factor for a country
     def look_up_renewables_cf(self, mode, country):
 
         # Import required files
-        cf_renewables = pd.read_csv(SEAR.model_inputs + 'grid/grid_rn_cf.csv')
+        cf_renewables = pd.read_csv(LEAF.model_inputs + 'grid/grid_rn_cf.csv')
         country_cf = cf_renewables.loc[cf_renewables['ISO3'] == country][mode].values[0]
         return country_cf
 
@@ -476,23 +476,23 @@ class Utils:
     def grid_capacity_cost(self, input_demand_df, tier_of_access):
 
         # Import required files
-        grid_costs = SEAR.country_data_sheet['Grid_cost']
-        grid_cf = SEAR.country_data_sheet['Grid_CF']
-        peak_factors = pd.read_csv(SEAR.model_inputs + 'grid/grid_peak_factors.csv')['Tier_' + str(tier_of_access)]
-        rural_energy_met = SEAR.country_data_sheet['Rural_energy_met_dec']
+        grid_costs = LEAF.country_data_sheet['Grid_cost']
+        grid_cf = LEAF.country_data_sheet['Grid_CF']
+        peak_factors = pd.read_csv(LEAF.model_inputs + 'grid/grid_peak_factors.csv')['Tier_' + str(tier_of_access)]
+        rural_energy_met = LEAF.country_data_sheet['Rural_energy_met_dec']
         # Output df
         output_df = pd.DataFrame()
 
-        for country in range(0, len(SEAR.country_data_sheet)):
+        for country in range(0, len(LEAF.country_data_sheet)):
 
-            country_iso = SEAR.country_data_sheet['ISO3'][country]
+            country_iso = LEAF.country_data_sheet['ISO3'][country]
             country_grid_cost = grid_costs[country]
             country_grid_cf = grid_cf[country]
             country_peak_factor = peak_factors[country]
             capacity_required = 1 / country_grid_cf
             country_demand = input_demand_df.loc[input_demand_df['ISO3'] == country_iso]
             # Factor in reliability
-            total_country_demand_reduced = country_demand[str(SEAR.target_year)] * rural_energy_met[country]
+            total_country_demand_reduced = country_demand[str(LEAF.target_year)] * rural_energy_met[country]
 
             # Divide by 8760 to get hourly demand - but add peak load factor!
             adjusted_hourly_demand_by_cell = total_country_demand_reduced / 8760
@@ -517,9 +517,9 @@ class Utils:
 
         # Import households added per year and installation costs
         households_added \
-            = pd.read_csv(SpatialData.spatial_filepath + 'households_added_by_year_' + SEAR.scenario + '_' +
+            = pd.read_csv(SpatialData.spatial_filepath + 'households_added_by_year_' + LEAF.scenario + '_' +
                      str(target_year) + '.csv')
-        installation_cost = SEAR.install_cost
+        installation_cost = LEAF.install_cost
         # Set output df
         output_df = pd.DataFrame()
         output_df['ISO3'] = households_added['ISO3']
@@ -533,7 +533,7 @@ class Utils:
                 year_install_costs_by_cell = Utils().return_discounted_value(year_install_costs_by_cell, i)
             output_df[str(i)] = year_install_costs_by_cell
             output_df['total'] += year_install_costs_by_cell
-        output_df.to_csv(SpatialData.spatial_filepath + 'household_installation_costs_' + SEAR.scenario + '_' + str(target_year) + '.csv')
+        output_df.to_csv(SpatialData.spatial_filepath + 'household_installation_costs_' + LEAF.scenario + '_' + str(target_year) + '.csv')
 
     # Util Function that simplifies mode column to only three categories
     def simplify_mode(self, mode_df):
