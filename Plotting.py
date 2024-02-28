@@ -16,7 +16,8 @@ from main import LEAF
 from Utils import *
 rcParams['font.family'] = 'sans-serif'
 rcParams['font.sans-serif'] = ['Arial']
-
+plt.rcParams['pdf.fonttype'] = 42
+plt.rcParams['ps.fonttype'] = 42
 
 class FishNet:
     geo_file_path = '~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/DATA/SPATIAL/fishnet_planar/Geo/'
@@ -55,26 +56,21 @@ def main() -> None:
     # plot_subplot_maps_three_cat()
     # plot_map_categories()
     # plot_map_divergant()
-    # bubble_plot()
-    # bar_plots()
-    # make_stacked_bars_scenarios()
-    # for i in range(4, 5):
-    #     plot_scenario_shift_map('CT_N_RP0.0', i, 'grid')
-    #simple_population_density_plot()
-    emissions_change_map(4)
+    # mapped_sensitivity_rel(2)
+    # for i in range(2, 5):
+    #     plot_scenario_shift_map('CT_Y_RP0.0', i, 'full')
+    # simple_population_density_plot()
+    # emissions_change_map(4)
     # plot_heatmaps_with_icons()
     # plot_sensitivity()
     # plot_africa_choropleth()
-    # plot_africa_choropleth_shares_diff(3)
-    # plot_africa_choropleth_shares_PV()
     # mean_reliability_mapped(2, 'CT_N_RP0.5')
     # mean_reliability_diff_mapped(2, 'CT_N_RP0.5', 'full')
-    # for i in range(2, 4):
-    #     mapped_sensitivity_carbon(i)
+    for i in range(4, 5):
+        mapped_sensitivity_carbon(i)
     # investment_requirement_mapped(3, 'CT_N_RP0.0')
     # mapped_sensitivity_carbon(4)
-    # plot_subplot_maps_ffym()
-
+    
 
 # Function for plotting country level data on a map
 def plot_africa_choropleth():
@@ -83,29 +79,30 @@ def plot_africa_choropleth():
     africa_shp = gp.read_file('Geo/PLOTTING_Export_Output_africa_bound.shp')
     africa_stats = LEAF.country_data_sheet
     map_and_stats = africa_shp.merge(africa_stats, on='ISO3')
-    fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=1, ncols=4, figsize=(36, 7))
-    ax1 = map_and_stats.plot(column="diesel_sub", cmap='Reds', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True)
-    ax2 = map_and_stats.plot(column="Rural_energy_met_dec", cmap='hot', linewidth=0.5, ax=ax2, edgecolor=".4", legend=True, vmin=0.3)
-    ax3 = map_and_stats.plot(column="Grid Emissions Intensity (kgCO2/kWh)", cmap='Reds', linewidth=0.5, ax=ax3, edgecolor=".4",legend=True)
-    ax4 = map_and_stats.plot(column="demand_growth_factor", cmap='hot_r', linewidth=0.5, ax=ax4, edgecolor=".4", legend=True) #legend=True, #legend_loc='lower center')
+    fig, (ax1) = plt.subplots(nrows=1, ncols=1, figsize=(8, 8))
+    # ax1 = map_and_stats.plot(column="diesel_sub", cmap='Reds', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True)
+    # ax1 = map_and_stats.plot(column="Rural_energy_met_dec", cmap='hot', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True, vmin=0.3)
+    ax1 = map_and_stats.plot(column="Grid Emissions Intensity (kgCO2/kWh)", cmap='Reds', linewidth=0.5, ax=ax1, edgecolor=".4",legend=True)
+    # ax4 = map_and_stats.plot(column="demand_growth_factor", cmap='hot_r', linewidth=0.5, ax=ax4, edgecolor=".4", legend=True) #legend=True, #legend_loc='lower center')
     # ax1 = map_and_stats.plot(column="diesel_sub", cmap='hot_r', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True)
     # ax2 = map_and_stats.plot(column="Rural_energy_met_dec", cmap='hot', linewidth=0.5, ax=ax2, edgecolor=".4", legend=True, vmin=0.3)
     # ax3 = map_and_stats.plot(column="Grid Emissions Intensity (kgCO2/kWh)", cmap='hot_r', linewidth=0.5, ax=ax3, edgecolor=".4",legend=True)
     # ax4 = map_and_stats.plot(column="demand_growth_factor", cmap='hot_r', linewidth=0.5, ax=ax4, edgecolor=".4", legend=True) #legend=True, #legend_loc='lower center')
 
     # ax5 = map_and_stats.plot(column="grid_density", cmap='hot', linewidth=0.5, ax=ax5, edgecolor=".4", legend=True)
-    ax1.set_title('Diesel Prices (2022 USD/litre)')
-    ax2.set_title('National Grid Est. % Rural Energy Met')
-    ax3.set_title('Grid Emissions Intensity (kgCO2/kWh')
-    ax4.set_title('Grid Demand Growth Factor')
+    # ax1.set_title('Diesel Prices (2022 USD/litre)')
+    ax1.set_title('National Grid Est. % Rural Energy Met')
+    # ax3.set_title('Grid Emissions Intensity (kgCO2/kWh')
+    # ax4.set_title('Grid Demand Growth Factor')
     # ax5.set_title('Population-weighted mean distance from grid (km)')
     ax1.axis('off')
-    ax2.axis('off')
-    ax3.axis('off')
-    ax4.axis('off')
-    # ax5.axis('off')
+    
+    # ax2.axis('off')
+    # ax3.axis('off')
+    # ax4.axis('off')
+    # # ax5.axis('off')
     # place all legends from each axis at bottom of subplots
-    # plt.savefig('Outputs/Plotting_outputs/' + 'heatmap_country_indicators.pdf')
+    plt.savefig('Outputs/Plotting_outputs/' + 'heatmap_country_grid_emissions.pdf')
     plt.tight_layout()
     plt.show()
 
@@ -129,7 +126,7 @@ def plot_sensitivity():
     plt.rcParams['ytick.right'] = True
     
     
-    fig, (ax0, ax1) = plt.subplots(nrows=1, ncols=2, figsize=(17, 7.5))
+    fig, (ax0, ax1) = plt.subplots(nrows=1, ncols=2, figsize=(15, 7))
     # set seaborn theme
     sns.set_theme(style="whitegrid")
     line_width = 1.5
@@ -152,7 +149,7 @@ def plot_sensitivity():
         ax0.plot(off_grid_pv_rel.index,off_grid_pv_rel, label='Off_grid_pv ' + str(i), linewidth=line_width
                  , color='#B1D665')
         ax0.plot(off_grid_diesel_rel.index, off_grid_diesel_rel, label='Off_grid_diesel ' + str(i),
-                 linewidth=line_width, color='#FFA9AE')
+                 linewidth=line_width, color='#FFA9AE') 
         ax0.plot(tier_reliability['grid_percentage_pop'].index, tier_reliability['grid_percentage_pop'], label='Grid ' + str(i),
                     linewidth=line_width, color='#9D8AC8')
         ax1.plot(off_grid_pv_carbon.index, off_grid_pv_carbon, label='Off_grid_pv ' + str(i), linewidth=line_width,
@@ -181,15 +178,15 @@ def plot_sensitivity():
                        Patch(facecolor='#9D8AC8', label='Grid'),
                        Patch(facecolor='#B1D665', label='Off-grid PV'),
                        Patch(facecolor='#FFA9AE', label='Off-grid Diesel')]
-    fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.42, 0.78))
-    # fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.84, 0.38))
+    # fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.42, 0.78))
+    fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.84, 0.38))
     plt.subplots_adjust(wspace=0.1, hspace=0.2, left=0.1, right=0.9, top=0.9, bottom=0.1)
     # plt.savefig('/Users/' + Plotting.home_directory + Plotting.plotting_output + 'Sensitivity_analysis.png', dpi=300)
     # if mode == 'subplot':
     #     # return the subplots as a tuple
     #     return ax0, ax1=
 
-    # plt.savefig('/Users/hrb16/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF-geospatial-energy-africa/Outputs/Plotting_outputs/Sensitivity_analysis_subsidy.pdf', dpi=300)
+    plt.savefig('Outputs/Plotting_outputs/Sensitivity_analysis_subsidy.pdf')
     plt.show()
 
 # Function that plots the scenario results for the different modes on maps for each tier
@@ -391,10 +388,10 @@ def mapped_sensitivity_rel(tier):
     map_and_stats = map.merge(output_df, on='id')
     fig, ax = plt.subplots(1, figsize=(12, 8))
     africa_shp.plot(color='#D9D3DA', linewidth=0.0, ax=ax, edgecolor=".4")
-    map_and_stats.plot(column="penalty", cmap='plasma', linewidth=0.0, ax=ax, edgecolor='0.8', legend=True, vmax=1)
+    map_and_stats.plot(column="penalty", cmap='plasma', linewidth=0.0, ax=ax, edgecolor='0.8', legend=True, vmax=1, rasterized=True)
     ax.set_ylim(-4100000, 3300000)
     ax.axis('off')
-    plt.savefig('Outputs/Plotting_outputs/reliability_mapped_sensitivity_tier_' + str(tier) + '.png', dpi=300)
+    # plt.savefig('Outputs/Plotting_outputs/reliability_mapped_sensitivity_tier_' + str(tier) + '.png', dpi=300)
     plt.savefig('Outputs/Plotting_outputs/reliability_mapped_sensitivity_tier_' + str(tier) + '.pdf')
     plt.tight_layout()
     plt.show()
@@ -410,7 +407,7 @@ def mapped_sensitivity_carbon(tier):
     base_scenario = pd.read_csv('Spatial/cost_optimal_output_by_cell_full_universal_2030_tier_'+ str(tier) + '_CT_N_RP0.0.csv')
     base_scenario['mode_simplified'] = Utils().simplify_mode(base_scenario)
     africa_shp = gp.read_file('Geo/Export_Output_africa_bound.shp')
-    carbon_prices = pd.read_csv(SEAR.sensitivity_inputs + 'carbon_prices.csv', index_col=0)
+    carbon_prices = pd.read_csv(LEAF.sensitivity_inputs + 'carbon_prices.csv', index_col=0)
 
     #Output df contains the mode at each penalty level for all, and separated for grid to pv, and grid to diesel
     output_df = pd.DataFrame()
@@ -444,10 +441,10 @@ def mapped_sensitivity_carbon(tier):
     map_and_stats = map.merge(output_df, on='id')
     fig, ax = plt.subplots(1, figsize=(12, 8))
     africa_shp.plot(color='#D9D3DA', linewidth=0.0, ax=ax, edgecolor=".4")
-    map_and_stats.plot(column="price", cmap='plasma', linewidth=0.0, ax=ax, edgecolor='0.8', legend=True)
+    map_and_stats.plot(column="price", cmap='plasma', linewidth=0.0, ax=ax, edgecolor='0.8', legend=True, rasterized=True)
     ax.set_ylim(-4100000, 3300000)
     ax.axis('off')
-    plt.savefig('Outputs/Plotting_outputs/carbon_mapped_sensitivity_tier_' + str(tier) + '.png', dpi=300)
+    # plt.savefig('Outputs/Plotting_outputs/carbon_mapped_sensitivity_tier_' + str(tier) + '.png', dpi=300)
     plt.savefig('Outputs/Plotting_outputs/carbon_mapped_sensitivity_tier_' + str(tier) + '.pdf')
     plt.tight_layout()
     plt.show()
@@ -512,21 +509,27 @@ def simple_population_density_plot():
     africa_shp = gp.read_file('Geo/Export_Output_africa_bound.shp')
     map = gp.read_file('Geo/fishnet_with_countries_duplicates_removed.shp')
     base_layer = africa_shp.merge(LEAF.country_data_sheet, on='ISO3')
-    grid_lines = gp.read_file('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project'
-                              '/DATA/SPATIAL/fishnet_planar/Geo/GRID_MAP_PLOTTING.shp')
-    population_gained_access = pd.read_csv(SpatialData.spatial_filepath + 'No_access_pop/by_year_additions_'
-                                           + LEAF.scenario + '_' + str(LEAF.target_year) + '.csv')
+    # grid_lines = gp.read_file('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project'
+    #                           '/DATA/SPATIAL/fishnet_planar/Geo/GRID_MAP_PLOTTING.shp')
+    population_gained_access = pd.read_csv('Spatial/No_access_pop/by_year_additions_' + LEAF.scenario + '_' + str(LEAF.target_year) + '.csv')
     population_gained_access['summed_adjusted'] = population_gained_access['sum'].replace(0, np.nan)
     map_and_stats = map.merge(population_gained_access, on='id')
-    fig, ax = plt.subplots(1, figsize=(12, 8))
+    fig, ax = plt.subplots(1, figsize=(8, 8))
     base_layer.plot(color='#D9D3DA', linewidth=0.1, ax=ax, edgecolor=".9")
-    map_and_stats.plot(column="summed_adjusted", cmap='Reds', linewidth=0.0, ax=ax, edgecolor='0.8', legend=True)
-    grid_lines.plot(color='0.5', linewidth=0.1, ax=ax)
+    map_and_stats.plot(column="summed_adjusted", cmap='Reds', linewidth=0.0, ax=ax, edgecolor='0.8', rasterized=True)
+    
+    # add colorbar
+    sm = plt.cm.ScalarMappable(cmap='Reds', norm=plt.Normalize(vmin=0, vmax=120000))
+    sm._A = []
+    # add vertical colorbar
+    cbar = plt.colorbar(sm, ax=ax, orientation='vertical', fraction=0.046, pad=0.04)
+    cbar.set_label('Population Requiring Access by 2030', fontsize=12)
+
+    # grid_lines.plot(color='0.5', linewidth=0.1, ax=ax)
     ax.set_ylim(-4100000, 3300000)
     ax.axis('off')
     # plt.rc('legend', fontsize=20)
-    # plt.savefig('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF_A'
-    #             '/Outputs/Plotting_outputs/population_requiring_access.png', dpi=300)
+    plt.savefig('Outputs/Plotting_outputs/population_requiring_access.pdf')
     plt.tight_layout()
     plt.show()
 
@@ -537,8 +540,8 @@ def emissions_change_map(tier_of_access):
     map = gp.read_file('Geo/fishnet_with_countries_duplicates_removed.shp')
     baseline_emissions = pd.read_csv('Spatial/cost_optimal_output_by_cell_full_universal_2030_tier_'+ str(tier_of_access) + '_CT_N_RP0.0.csv')
     ctax_emissions = pd.read_csv('Spatial/cost_optimal_output_by_cell_full_universal_2030_tier_'+ str(tier_of_access) + '_CT_Y_RP0.0.csv')
-    population_gained_access = pd.read_csv('Spatial/No_access_pop/by_year_additions_'
-                                           + LEAF.scenario + '_' + str(LEAF.target_year) + '.csv')
+    # population_gained_access = pd.read_csv('Spatial/No_access_pop/by_year_additions_'
+    #                                        + LEAF.scenario + '_' + str(LEAF.target_year) + '.csv')
     ctax_emissions['diff'] = baseline_emissions['total_emissions'] - ctax_emissions['total_emissions']
     # ctax_emissions['diff'] = ctax_emissions['diff']/population_gained_access['sum']
     ctax_emissions['diff'] = ctax_emissions['diff'].replace(0, np.nan)
@@ -546,33 +549,29 @@ def emissions_change_map(tier_of_access):
     map_and_stats = map.merge(ctax_emissions, on='id')
     fig, ax = plt.subplots(1, figsize=(12, 8))
     africa_shp.plot(color='#D9D3DA', linewidth=0.2, ax=ax, edgecolor=".8")
-    map_and_stats.plot(column="diff", cmap='cool', linewidth=0.0, ax=ax, edgecolor='0.8', legend=True, vmin=0, vmax=30000)
+    map_and_stats.plot(column="diff", cmap='cool', linewidth=0.0, ax=ax, edgecolor='0.8', legend=True, vmin=0, vmax=45000)
     ax.set_ylim(-4100000, 3300000)
     ax.axis('off')
     # plt.savefig('Outputs/Plotting_outputs/emissions_change_CTAX_tier_' + str(tier_of_access)
     #             + '.png', dpi=300)
-    # plt.savefig('Outputs/Plotting_outputs/emissions_change_CTAX_tier_' + str(tier_of_access) + '.pdf')
+    plt.savefig('Outputs/Plotting_outputs/emissions_change_CTAX_tier_' + str(tier_of_access) + '.pdf')
     plt.tight_layout()
     plt.show()
 
 # Plot single tier (3) map of difference from reference scenario to test scenario
 def plot_scenario_shift_map(test_scenario, tier, rel):
 
-    africa_shp = gp.read_file('~/Library/Mobile Documents/com~apple~CloudDocs'
-                              '/Mitigation_project/DATA/SPATIAL/fishnet_planar/Geo/Export_Output_africa_bound.shp')
-    map = gp.read_file(FishNet.geo_file_path + 'fishnet_with_countries_duplicates_removed.shp')
-    stats_reference =  pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF_A'
-                          '/Spatial/cost_optimal_output_by_cell_full_universal_2030_tier_'+ str(tier) + '_CT_N_RP0.0.csv')
-    stats_scenario = pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF_A'
-                          '/Spatial/cost_optimal_output_by_cell_' + rel +'_universal_2030_tier_'+ str(tier) + '_' +
+    africa_shp = gp.read_file('Geo/Export_Output_africa_bound.shp')
+    map = gp.read_file('Geo/fishnet_with_countries_duplicates_removed.shp')
+    stats_reference =  pd.read_csv('Spatial/cost_optimal_output_by_cell_full_universal_2030_tier_'+ str(tier) + '_CT_N_RP0.0.csv')
+    stats_scenario = pd.read_csv('Spatial/cost_optimal_output_by_cell_' + rel +'_universal_2030_tier_'+ str(tier) + '_' +
                                  str(test_scenario) + '.csv')
     base_layer = africa_shp.merge(LEAF.country_data_sheet, on='ISO3')
-    population_gained_access = pd.read_csv(SpatialData.spatial_filepath + 'No_access_pop/by_year_additions_'
+    population_gained_access = pd.read_csv('Spatial/No_access_pop/by_year_additions_'
                                            + LEAF.scenario + '_' + str(LEAF.target_year) + '.csv')['sum']
     stats_reference['mode_simplified'] = Utils().simplify_mode(stats_reference)
     stats_scenario['mode_simplified'] = Utils().simplify_mode(stats_scenario)
     stats_scenario['mode_diff'] = stats_reference['mode_simplified'] - stats_scenario['mode_simplified']
-
 
     # # Create individual layers on map
     stats_scenario['grid_to_pv'] = Utils().isolate_layer(stats_reference, stats_scenario, 1, -1)
@@ -585,15 +584,15 @@ def plot_scenario_shift_map(test_scenario, tier, rel):
     # # Plot map layers
     map_and_stats = map.merge(stats_scenario, on='id')
     fig, ax = plt.subplots(1, figsize=(10, 10))
-    base_layer.plot(color='#D9D3DA', linewidth=0.0, ax=ax, edgecolor=".4")
+    base_layer.plot(color='#D9D3DA', linewidth=0.0, ax=ax, edgecolor=".4", rasterized=True)
     # map_and_stats.plot(column="mode_diff", cmap='RdBu', linewidth=0.0, ax=ax, edgecolor='0.8', legend=False)
     # map_and_stats.plot(column="diesel_to_pv", cmap='winter_r', linewidth=0.0, ax=ax, edgecolor='0.8')
-    map_and_stats.plot(column="diesel_to_pv", cmap='winter_r', linewidth=0.0, ax=ax, edgecolor='0.8')
-    map_and_stats.plot(column="diesel_to_grid", cmap='cool_r', linewidth=0.0, ax=ax, edgecolor='0.8')
-    map_and_stats.plot(column="grid_to_pv", cmap='winter', linewidth=0.0, ax=ax, edgecolor='0.8')
-    map_and_stats.plot(column="grid_to_diesel", cmap='summer_r', linewidth=0.0, ax=ax, edgecolor='0.8')
-    map_and_stats.plot(column="pv_to_diesel", cmap='Wistia_r', linewidth=0.0, ax=ax, edgecolor='0.8')
-    map_and_stats.plot(column="pv_to_grid", cmap='PiYG', linewidth=0.0, ax=ax, edgecolor='0.8')
+    map_and_stats.plot(column="diesel_to_pv", cmap='winter_r', linewidth=0.0, ax=ax, edgecolor='0.8', rasterized=True)
+    map_and_stats.plot(column="diesel_to_grid", cmap='cool_r', linewidth=0.0, ax=ax, edgecolor='0.8',rasterized=True)
+    map_and_stats.plot(column="grid_to_pv", cmap='winter', linewidth=0.0, ax=ax, edgecolor='0.8', rasterized=True)
+    map_and_stats.plot(column="grid_to_diesel", cmap='summer_r', linewidth=0.0, ax=ax, edgecolor='0.8', rasterized=True)
+    map_and_stats.plot(column="pv_to_diesel", cmap='Wistia_r', linewidth=0.0, ax=ax, edgecolor='0.8', rasterized=True)
+    map_and_stats.plot(column="pv_to_grid", cmap='PiYG', linewidth=0.0, ax=ax, edgecolor='0.8', rasterized=True)
     # ax.set_title('Difference in mode choice between reference and test scenario')
     ax.set_ylim(-4100000, 3300000)
     ax.axis('off')
@@ -616,9 +615,16 @@ def plot_scenario_shift_map(test_scenario, tier, rel):
     labels = []
     modes = []
     # colours = ['#00FF7C', '#FF00FA', '#0700F8', '#FFFF69', '#FF7623', '#870048']
-    list_modes = ['diesel_to_pv', 'diesel_to_grid', 'grid_to_pv','grid_to_diesel', 'pv_to_diesel', 'pv_to_grid']
-    colours = ['#0700F8', '#FFFF69']
-    list_modes = ['grid_to_pv', 'grid_to_diesel']
+    # list_modes = ['diesel_to_pv', 'diesel_to_grid', 'grid_to_pv','grid_to_diesel', 'pv_to_diesel', 'pv_to_grid']
+    colours = ['#0700F8', '#00FF7C', '#FF00FA']
+    list_modes = ['grid_to_pv', 'diesel_to_pv','diesel_to_grid']
+    # 
+    if test_scenario == 'CT_Y_RP0.0':
+        colours = ['#0700F8', '#00FF7C', '#FF00FA']
+        list_modes = ['grid_to_pv', 'diesel_to_pv', 'diesel_to_grid']
+    
+    
+    
     bar_colours = []
     for mode in range(0, len(list_modes)):
         mode_column = stats_scenario[list_modes[mode]]
@@ -652,9 +658,8 @@ def plot_scenario_shift_map(test_scenario, tier, rel):
     plt.tight_layout()
     # plt.savefig('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF_A'
     #                        '/Outputs/Plotting_outputs/shift_map_' + test_scenario + '_tier_' + str(tier) + '.png', dpi=300)
-    # plt.savefig('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF_A'
-    #                        '/Outputs/Plotting_outputs/shift_map_' + test_scenario + '_tier_' + str(tier) + '.pdf')
-    plt.show()
+    plt.savefig('Outputs/Plotting_outputs/shift_map_' + test_scenario + '_tier_' + str(tier) + '.pdf')
+
 
 def plot_map():
 
@@ -801,11 +806,6 @@ def bar_plots():
     # plt.tight_layout(h_pad=2)
     # plt.xticks(rotation=90)
     plt.show()
-
-
-
-
-
 
 
 
