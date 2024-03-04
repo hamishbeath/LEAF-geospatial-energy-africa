@@ -56,7 +56,7 @@ def main() -> None:
     # plot_subplot_maps_three_cat()
     # plot_map_categories()
     # plot_map_divergant()
-    # mapped_sensitivity_rel(2)
+    mapped_sensitivity_rel(2)
     # for i in range(2, 5):
     #     plot_scenario_shift_map('CT_Y_RP0.0', i, 'full')
     # simple_population_density_plot()
@@ -66,8 +66,8 @@ def main() -> None:
     # plot_africa_choropleth()
     # mean_reliability_mapped(2, 'CT_N_RP0.5')
     # mean_reliability_diff_mapped(2, 'CT_N_RP0.5', 'full')
-    for i in range(4, 5):
-        mapped_sensitivity_carbon(i)
+    # for i in range(4, 5):
+    #     mapped_sensitivity_carbon(i)
     # investment_requirement_mapped(3, 'CT_N_RP0.0')
     # mapped_sensitivity_carbon(4)
     
@@ -81,8 +81,8 @@ def plot_africa_choropleth():
     map_and_stats = africa_shp.merge(africa_stats, on='ISO3')
     fig, (ax1) = plt.subplots(nrows=1, ncols=1, figsize=(8, 8))
     # ax1 = map_and_stats.plot(column="diesel_sub", cmap='Reds', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True)
-    # ax1 = map_and_stats.plot(column="Rural_energy_met_dec", cmap='hot', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True, vmin=0.3)
-    ax1 = map_and_stats.plot(column="Grid Emissions Intensity (kgCO2/kWh)", cmap='Reds', linewidth=0.5, ax=ax1, edgecolor=".4",legend=True)
+    ax1 = map_and_stats.plot(column="Rural_energy_met_dec", cmap='hot', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True, vmin=0.3)
+    # ax1 = map_and_stats.plot(column="Grid Emissions Intensity (kgCO2/kWh)", cmap='Reds', linewidth=0.5, ax=ax1, edgecolor=".4",legend=True)
     # ax4 = map_and_stats.plot(column="demand_growth_factor", cmap='hot_r', linewidth=0.5, ax=ax4, edgecolor=".4", legend=True) #legend=True, #legend_loc='lower center')
     # ax1 = map_and_stats.plot(column="diesel_sub", cmap='hot_r', linewidth=0.5, ax=ax1, edgecolor=".4", legend=True)
     # ax2 = map_and_stats.plot(column="Rural_energy_met_dec", cmap='hot', linewidth=0.5, ax=ax2, edgecolor=".4", legend=True, vmin=0.3)
@@ -102,7 +102,7 @@ def plot_africa_choropleth():
     # ax4.axis('off')
     # # ax5.axis('off')
     # place all legends from each axis at bottom of subplots
-    plt.savefig('Outputs/Plotting_outputs/' + 'heatmap_country_grid_emissions.pdf')
+    plt.savefig('Outputs/Plotting_outputs/' + 'heatmap_country_grid_energy_met.pdf')
     plt.tight_layout()
     plt.show()
 
@@ -167,7 +167,7 @@ def plot_sensitivity():
     ax1.set_xticks(np.arange(1, 10, 1))
     ax1.set_xticklabels(['10', '20', '30', '40', '50', '60', '70', '80', '90'])
     # ax0.set_title('Reliability Sensitivity Analysis', fontsize=16)
-    ax0.set_xlabel('Reliability subsidy in 2022 $', fontsize=16)
+    ax0.set_xlabel('Reliability penalty in 2022 $', fontsize=16)
     ax0.set_ylabel('Percentage of population of each Mode', fontsize=16)
     # ax1.set_title('Carbon Sensitivity Analysis', fontsize=16)
     ax1.set_xlabel('Percentile values of AR6 C1 & C2 Scenario Carbon Prices', fontsize=16)
@@ -178,15 +178,15 @@ def plot_sensitivity():
                        Patch(facecolor='#9D8AC8', label='Grid'),
                        Patch(facecolor='#B1D665', label='Off-grid PV'),
                        Patch(facecolor='#FFA9AE', label='Off-grid Diesel')]
-    # fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.42, 0.78))
-    fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.84, 0.38))
+    fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.42, 0.78))
+    # fig.legend(handles=legend_elements, loc='center', frameon=False, fontsize=14, bbox_to_anchor=(0.84, 0.38))
     plt.subplots_adjust(wspace=0.1, hspace=0.2, left=0.1, right=0.9, top=0.9, bottom=0.1)
     # plt.savefig('/Users/' + Plotting.home_directory + Plotting.plotting_output + 'Sensitivity_analysis.png', dpi=300)
     # if mode == 'subplot':
     #     # return the subplots as a tuple
     #     return ax0, ax1=
 
-    plt.savefig('Outputs/Plotting_outputs/Sensitivity_analysis_subsidy.pdf')
+    plt.savefig('Outputs/Plotting_outputs/Sensitivity_analysis_penalty.pdf')
     plt.show()
 
 # Function that plots the scenario results for the different modes on maps for each tier
