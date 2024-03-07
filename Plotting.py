@@ -19,44 +19,19 @@ rcParams['font.sans-serif'] = ['Arial']
 plt.rcParams['pdf.fonttype'] = 42
 plt.rcParams['ps.fonttype'] = 42
 
-class FishNet:
-    geo_file_path = '~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/DATA/SPATIAL/fishnet_planar/Geo/'
-    plotting_output_filepath = 'Outputs/plotting_materials/'
 
 class Plotting:
 
-    home_directory = home_directory = 'hrb16' # 'hamishbeath' # 'hrb16' 
+
     plotting_output = 'Outputs/plotting_materials/'
 
-# class SpatialPlotting:
-
-    # energy_by_fid = pd.read_csv('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project'
-    #                         '/SEAR_A/Spatial/energy_by_fid_SSP2_min_tier3.csv')
-    # grid_cost_emissions = pd.read_csv('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project'
-    #                         '/SEAR_A/Spatial/grid_cost_emissions_tier2_ssp2.csv')
-    #mg_cost_emissions = pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/SEAR_A/Spatial/MG_Emissions_Costs.csv')
-    # #no_access_growth = pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/SEAR_A/Spatial/no_access_pop_growth_SSP3.csv')
-    # #processed_pop_growth_access = pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/SEAR_A'
-    #                                           '/Spatial/No_access_pop/no_access_processed_snapshot_2030_SSP2.csv')
 
 def main() -> None:
 
-    # add_extra_fid_cols = pd.read_csv('/Users/hrb16/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project'
-    #                                  '/DATA/SPATIAL/fishnet/Grid/centroids_fuller_join_fids.csv')
-    # filename = 'OUTPUT_centroids_joined_fids_fuller'
-    # join_attribute_centroids(add_extra_fid_cols, filename)
-
-    # Join attributes for plotting
-    # input_csv = pd.read_csv('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project'
-    #                         '/SEAR_A/Spatial/population_by_year.csv')
-    # input_filename = 'population_by_year_test'
-    # join_attribute(input_csv, input_filename)
-    # tree_maps()
-    # plot_subplot_maps()
-    # plot_subplot_maps_three_cat()
+    plot_subplot_maps_cat()
     # plot_map_categories()
     # plot_map_divergant()
-    mapped_sensitivity_rel(2)
+    # mapped_sensitivity_rel(2)
     # for i in range(2, 5):
     #     plot_scenario_shift_map('CT_Y_RP0.0', i, 'full')
     # simple_population_density_plot()
@@ -194,7 +169,7 @@ def plot_subplot_maps_cat():
 
     # Set up parameters
     rel = 'full'
-    scenario = 'CT_N_RP0.5'
+    scenario = 'CT_Y_RP0.0'
     colors_4 = ["#D9D3DA", "#9D8AC8", "#B1D665", "#FFA9AE", "#A7D2FB", "#F6CD41"]
     colors = ["#D9D3DA", "#9D8AC8", "#B1D665", "#FFA9AE", "#A7D2FB"]
     colors_pies = ["#9D8AC8", "#B1D665", "#A7D2FB", "#FFA9AE", '#FFCA06']
@@ -454,7 +429,7 @@ def investment_requirement_mapped(tier, scenario):
 
     single_mode = 'none' # 'grid', 'pv_investment_MG', 'diesel_investment_MG', 'pv_investment_SHS', 'diesel_sa', 'none'
     rel = 'full'
-    per_cap = 'Y'
+    per_cap = 'N'
     africa_shp = gp.read_file('Geo/Export_Output_africa_bound.shp')
     base_layer = africa_shp.merge(LEAF.country_data_sheet, on='ISO3')
     map = gp.read_file(FishNet.geo_file_path + 'fishnet_with_countries_duplicates_removed.shp')
@@ -500,7 +475,7 @@ def investment_requirement_mapped(tier, scenario):
     ax.set_ylim(-4100000, 3300000)
     ax.axis('off')
     plt.tight_layout()
-    # plt.savefig('Outputs/Plotting_outputs/investment_percap_' + per_cap + '_tier_' + str(tier) + '.pdf')
+    plt.savefig('Outputs/Plotting_outputs/investment_percap_' + per_cap + '_tier_' + str(tier) + '.pdf')
     plt.show()
 
 # Function that makes a subplot of people requiring access to electricity by 2030
