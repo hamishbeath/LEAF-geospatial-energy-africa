@@ -5,7 +5,7 @@ from Utils import *
 
 class LEAF:
 
-    model_filepath = '~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF-geospatial-energy-africa/' 
+    model_filepath = '' 
     model_inputs, model_outputs = model_filepath + 'Inputs/', model_filepath + 'Outputs/'
     sensitivity_outputs = model_outputs + 'Sensitivity/'
     sensitivity_inputs = model_inputs + 'Sensitivity/'
@@ -16,12 +16,12 @@ class LEAF:
     # ssps = ['2']
     ssp = 2
     years = ['2020']
-    CLOVER_load_filepaths = '/Volumes/Hamish_ext/Mitigation_project/CLOVER_inputs/Load/Load_by_year/'
+    # CLOVER_load_filepaths = '/Volumes/Hamish_ext/Mitigation_project/CLOVER_inputs/Load/Load_by_year/'
     # CLOVER_results_pv = pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/DATA'
     #                                 '/Results/SSP2_MG_tier2_2020_PV.csv')
     # CLOVER_results_diesel = pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/DATA'
     #                                     '/Results/SSP2_MG_tier2_2020_diesel.csv')
-    fishnet_filepath = ('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/DATA/SPATIAL/fishnet/')
+    # fishnet_filepath = ('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/DATA/SPATIAL/fishnet/')
     target_year = 2030
     scenario = 'universal'  # Universal, Baseline or All
     grid_cost = 16000  # Current USD / km of lines
@@ -731,8 +731,7 @@ def electricity_demand_by_year(target_year, scenario, tier_of_access):
             #                            + str(tier_of_access) + '/' + str(lookup_country)
             #                            + '_community_load_' + str(year) + '.csv')[str(year)]) / 100
             energy_file = \
-                (pd.read_csv('~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/CLOVER DEMAND BACKUP/'
-                             + 'SSP' + str(LEAF.ssp) + '/Tier ' + str(tier_of_access) + '/' + str(lookup_country) +
+                (pd.read_csv('Inputs/Load/' + 'SSP' + str(LEAF.ssp) + '/Tier ' + str(tier_of_access) + '/' + str(lookup_country) +
                              '_community_load_' + str(year) + '.csv')[str(year)]) / 100
 
             year_energy_total = np.sum(energy_file) / 1000
@@ -1111,10 +1110,10 @@ def calculate_emissions_investment_off_grid(target_year, scenario, tier_of_acces
 
     if LEAF.split_emissions_assets == 'Y':
         print('Splitting emissions by asset lifetime')
-        pv_emissions_out.to_csv('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF/Tests/pv_emissions_out_pre.csv')
+        pv_emissions_out.to_csv('/Tests/pv_emissions_out_pre.csv')
         pv_emissions_out = Utils().adapt_infrastructure_emissions\
             (pv_emissions_out, LEAF.target_year, LEAF.PV_infrastructure_asset_lifetime)
-        pv_emissions_out.to_csv('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF/Tests/pv_emissions_out_post.csv')
+        pv_emissions_out.to_csv('/Tests/pv_emissions_out_post.csv')
     else:
         pass
 

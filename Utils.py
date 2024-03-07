@@ -3,13 +3,14 @@ import numpy as np
 
 
 # from main import *
-# from main import LEAF, SpatialData
+from main import LEAF, SpatialData
 
 
 class Utils:
-    clover_results_filepath = '~/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/DATA/Results/'
-    external_load_filepath = '/Volumes/Hamish_ext/Mitigation_project/CLOVER_inputs/Load/'
-
+    
+    clover_results_filepath = 'Inputs/off_grid/'
+    # external_load_filepath = '/Volumes/Hamish_ext/Mitigation_project/CLOVER_inputs/Load/'
+    external_load_filepath = 'Inputs/Load/' 
 
     def return_relevant_clover_results_summary(self, ssp, tier, system):
 
