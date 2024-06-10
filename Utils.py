@@ -174,7 +174,7 @@ class Utils:
         return countries_summaries_df
 
     # Util function that returns the summary statistics for a given dataframe
-    def get_summary_statistics(self, input_df):
+    def get_summary_statistics(self, input_df, country=None):
         """
         Function that returns summary statistics of the output df
         :param input_df: the dataframe of per cell outputs fed to the function
@@ -182,6 +182,10 @@ class Utils:
         """
         modes = ['pv_mini_grid', 'diesel_mini_grid', 'diesel_SA', 'pv_SA', 'grid']
         output_df = {}
+
+        if country is not None:
+            input_df = input_df.loc[input_df['ISO3'] == country]
+
 
         # Calculate values needed to outputs
         total_pv_mini_grid_population = np.sum(input_df['pv_mini_grid_population'].values)
@@ -268,8 +272,6 @@ class Utils:
 
         subsidy = grid_rel.sort_values(by='id', axis=0, ascending=True)
         return subsidy['sum']
-
-
 
     # Util function that categorises countries by demand growth and calculates the average to peak load factor
     def categorise_countries_by_demand_growth(self, end_year):

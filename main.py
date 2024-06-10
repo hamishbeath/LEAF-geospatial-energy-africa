@@ -86,10 +86,13 @@ def main() -> None:
     # for i in range(3, 5):
     #     return_least_cost_option(LEAF.target_year, LEAF.scenario, i, LEAF.reliability, LEAF.unmet_demand_penalty,
     #                              LEAF.global_carbon_taxes, LEAF.met_demand_subsidy)
-    reliability_subsidy_sensitivity_analysis()
+    # reliability_subsidy_sensitivity_analysis()
     # Utils().calculate_grid_coverage_by_country()
     # Utils().scenario_analysis(4, 'CT_Y_RP0.0', 'all')
-    # input_file = pd.read_csv('/Users/hamishbeath/Library/Mobile Documents/com~apple~CloudDocs/Mitigation_project/LEAF/Spatial/grid_extension_emissions_universal_2030_tier_3.csv')
+    for tier in range(1, 5):
+        input_file = pd.read_csv('Spatial/cost_optimal_output_by_cell_full_universal_2030_tier_' + str(tier) + '_CT_Y_RP0.0.csv')
+        stats = Utils().get_summary_statistics(input_file, country='MOZ')
+        print(stats)
     # Utils().adapt_infrastructure_emissions(input_file, LEAF.target_year, 20)
     # Utils().grid_cost_and_cf()
     # Utils().categorise_countries_by_demand_growth(2030)
